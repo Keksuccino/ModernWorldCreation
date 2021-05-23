@@ -11,8 +11,8 @@ ModernWorldCreation is available on [CurseForge](https://www.curseforge.com/mine
 ModernWorldCreation is licensed under KML (Keksuccino Mod License).<br>
 See LICENSE.md for more information.
 
-Textures used for game mode buttons Copyright © Mojang Studios.
-
 ## Copyright
 
 - ModernWorldCreation Copyright © 2021 Keksuccino.<br>
+
+- Textures used for game mode buttons Copyright © Mojang Studios.
