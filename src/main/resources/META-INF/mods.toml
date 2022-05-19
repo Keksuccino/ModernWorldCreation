@@ -1,26 +1,40 @@
 modLoader="javafml" #mandatory
-loaderVersion="[33,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[38,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license="KML (Keksuccino Mod License)"
 [[mods]] #mandatory
 modId="modernworldcreation" #mandatory
 version="1.0.0" #mandatory
-displayName="ModernWorldCreation" #mandatory
+displayName="Modern World Creation" #mandatory
 #displayURL="https://www.curseforge.com/minecraft/mc-mods/modernworldcreation" #optional
 authors="Keksuccino" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''Create your worlds more modern than ever!
 
-Note *: Does not actually make your worlds more modern looking, dude.
+Disclaimer: Does not actually make your worlds look more modern.
 
 COPYRIGHT:
 
-> ModernWorldCreation © Copyright 2021 Keksuccino.
-  ModernWorldCreation is licensed under KML.
-  Visit https://github.com/Keksuccino/ModernWorldCreation for more infos about this license.'''
+> Modern World Creation © Copyright 2021 Keksuccino.
+  Modern World Creation is licensed under KML.
+  Visit https://github.com/Keksuccino/ModernWorldCreation for more information about this license.'''
 
 [[dependencies.modernworldcreation]]
 modId="konkrete"
 mandatory=true
 ordering="NONE"
-versionRange="[1.1.4,)"
+versionRange="[1.3.0,)"
 side="BOTH"
+
+[[dependencies.modernworldcreation]]
+modId="forge"
+mandatory=true
+versionRange="[38.0.6,)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.modernworldcreation]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.18,)"
+ordering="NONE"
+side="CLIENT"
