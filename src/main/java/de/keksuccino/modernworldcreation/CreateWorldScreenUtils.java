@@ -25,16 +25,22 @@ public class CreateWorldScreenUtils {
 				return enumElements[0];
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			ModernWorldCreation.LOGGER.error("ERROR IN: CreateWorldScreenUtils#getVanillaGameModeEnumElement");
+			ModernWorldCreation.printStackTrace(e);
 		}
 		return null;
 	}
 	
 	public static Class<?> getVanillaGameModeEnumClass() {
 		try {
-			return Class.forName("net.minecraft.client.gui.screen.CreateWorldScreen$GameMode");
+			return Class.forName("net.minecraft.client.gui.screens.worldselection.CreateWorldScreen$SelectedGameMode");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			try {
+				return Class.forName("net.minecraft.client.gui.screens.worldselection.CreateWorldScreen$SelectedGameMode");
+			} catch (ClassNotFoundException e2) {
+				ModernWorldCreation.LOGGER.error("ERROR IN: CreateWorldScreenUtils#getVanillaGameModeEnumClass");
+				ModernWorldCreation.printStackTrace(e2);
+			}
 		}
 		return null;
 	}
