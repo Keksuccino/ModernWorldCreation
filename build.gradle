@@ -1,25 +1,24 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-		maven { url = 'https://repo.spongepowered.org/maven' }
-        jcenter()
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
+		maven { url = 'https://repo.spongepowered.org/maven' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
 		classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0'
-group = 'de.keksuccino'
+version = '1.0.0'
+group = 'de.keksuccino.modernworldcreation'
 archivesBaseName = 'modernworldcreation'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 compileJava {
 	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 }
@@ -28,56 +27,38 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 
 minecraft {
 
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
-	
-    //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+	mappings channel: 'official', version: '1.16.5'
 
     runs {
         client {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
             arg "-mixin.config=modernworldcreation.mixin.json"
-            mods {
-                fancymenu {
-                    source sourceSets.main
-                }
-            }
         }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=modernworldcreation.mixin.json"
-            mods {
-                fancymenu {
-                    source sourceSets.main
-                }
-            }
-        }
-
     }
+
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compileClasspath fileTree(dir: 'libs', include: ['*.jar'])
 
-    minecraft 'net.minecraftforge:forge:1.16.5-36.0.1'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.8'
+	
+	annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+	testAnnotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
 }
 
-//mixin {
-//    defaultObfuscationEnv searge
-//}
+mixin {
+    add sourceSets.main, "modernworldcreation.mixin-refmap.json"
+}
 
 jar {
     manifest {
         attributes([
-            "Specification-Title": "ModernWorldCreation",
+            "Specification-Title": "Modern World Creation",
             "Specification-Vendor": "Keksuccino",
             "Specification-Version": "1",
             "Implementation-Title": project.name,
@@ -90,6 +71,7 @@ jar {
             "MixinConfigs" : "modernworldcreation.mixin.json"
         ])
     }
+	
 }
 
 jar.finalizedBy('reobfJar') 

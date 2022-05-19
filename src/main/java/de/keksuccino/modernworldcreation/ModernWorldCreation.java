@@ -2,8 +2,15 @@ package de.keksuccino.modernworldcreation;
 
 import java.io.File;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import de.keksuccino.konkrete.config.Config;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 @Mod("modernworldcreation")
 public class ModernWorldCreation {
@@ -16,14 +23,20 @@ public class ModernWorldCreation {
 	
 	public ModernWorldCreation() {
 		
-		//TODO client-side handling einbauen
+		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 		
-		if (!HOME_DIR.exists()) {
-			HOME_DIR.mkdirs();
+		if (FMLEnvironment.dist == Dist.CLIENT) {
+			
+			if (!HOME_DIR.exists()) {
+				HOME_DIR.mkdirs();
+			}
+
+			updateConfig();
+			
+		} else {
+			System.out.println("## WARNING ## 'Modern World Creation' is a client mod and has no effect when loaded on a server!");
 		}
-		
-		updateConfig();
-		
+
 	}
 	
 	public static void updateConfig() {
@@ -31,8 +44,6 @@ public class ModernWorldCreation {
 		try {
 			
 			config = new Config(HOME_DIR.getPath() + "/config.cfg");
-			
-			//-- VALUES
 			
 			config.registerValue("show_gamemode_info", true, "general");
 			config.registerValue("show_allowcheats_tooltip", true, "general");
@@ -42,21 +53,7 @@ public class ModernWorldCreation {
 			config.registerValue("button_border_thickness", 1.0F, "general");
 			config.registerValue("button_border_hex_color", "#e0e0e0", "general");
 			
-			//-- SYNC CONFIG TO FILE
-			
 			config.syncConfig();
-			
-			//-- UPDATE OLD CATEGORIES
-			
-			config.setCategory("show_gamemode_info", "general");
-			config.setCategory("show_allowcheats_tooltip", "general");
-			config.setCategory("bold_menu_title", "general");
-			config.setCategory("show_header", "general");
-			config.setCategory("show_footer", "general");
-			config.setCategory("button_border_thickness", "general");
-			config.setCategory("button_border_hex_color", "general");
-			
-			//-- CLEAR UNUSED VALUES FROM FILE
 			
 			config.clearUnusedValues();
 			

@@ -14,6 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
+import net.minecraft.client.gui.widget.button.Button.IPressable;
+
 public class ToggleModeButton extends AdvancedButton {
 	
 	protected static final ResourceLocation INFO_BACK_TEXTURE = new ResourceLocation("modernworldcreation", "info_back.png");
@@ -72,7 +74,7 @@ public class ToggleModeButton extends AdvancedButton {
 		int h = this.height;
 		int x = this.x;
 		int y = this.y;
-		FontRenderer font = Minecraft.getInstance().fontRenderer;
+		FontRenderer font = Minecraft.getInstance().font;
 
 		if (this.isHovered() || this.selected) {
 			if (this.animationTicker < this.addToHeightWhenHovered) {
@@ -98,7 +100,7 @@ public class ToggleModeButton extends AdvancedButton {
 		
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		
-		Minecraft.getInstance().getTextureManager().bindTexture(this.texture);
+		Minecraft.getInstance().getTextureManager().bind(this.texture);
 
 		if (!this.isHovered() && !this.selected && this.darkenWhenUnfocused) {
 			RenderSystem.color4f(0.6F, 0.6F, 0.6F, 1.0F);
@@ -117,8 +119,8 @@ public class ToggleModeButton extends AdvancedButton {
 		
 		String labelString = "§f§l" + this.label;
 		ITextComponent comp = new StringTextComponent(labelString);
-		int sWidth = font.getStringPropertyWidth(comp);
-		int sHeight = font.FONT_HEIGHT;
+		int sWidth = font.width(comp);
+		int sHeight = font.lineHeight;
 		int sX = x + (w / 2) - (sWidth / 2);
 		int sY = y + h - 10 - (labelBackgroundHeight / 2) - (sHeight / 2);
 		if (this.animationTicker > 1) {
@@ -126,7 +128,7 @@ public class ToggleModeButton extends AdvancedButton {
 		}
 		
 		//Draw label
-		font.func_238422_b_(matrix, comp.func_241878_f(), sX, sY, 0);
+		font.draw(matrix, comp.getVisualOrderText(), sX, sY, 0);
 		
 		this.renderBorder(matrix);
 		

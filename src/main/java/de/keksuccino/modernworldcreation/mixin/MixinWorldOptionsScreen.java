@@ -15,17 +15,17 @@ import net.minecraft.client.gui.widget.button.Button;
 @Mixin(value = WorldOptionsScreen.class)
 public abstract class MixinWorldOptionsScreen {
 
-	@Shadow private int field_239032_f_; //width
+	@Shadow private int width;
 	
-	@Shadow private Button field_239037_k_; //importSettings Button
+	@Shadow private Button importSettingsButton;
 	
-	@Inject(at = @At(value = "TAIL"), method = "func_239048_a_")
+	@Inject(at = @At(value = "TAIL"), method = "init")
 	protected void onInit(CreateWorldScreen s, Minecraft mc, FontRenderer font, CallbackInfo info) {
 		
-		int j = this.field_239032_f_ / 2 + 5;
+		int j = this.width / 2 + 5;
 		
-		this.field_239037_k_.x = j;
-		this.field_239037_k_.y = 151;
+		this.importSettingsButton.x = j;
+		this.importSettingsButton.y = 151;
 		
 	}
 	
