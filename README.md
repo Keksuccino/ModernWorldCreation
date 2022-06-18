@@ -18,7 +18,7 @@ Modern World Creation is available on [CurseForge](https://www.curseforge.com/mi
 
 ## Licensing
 
-Modern World Creation is licensed under KML (Keksuccino Mod License).<br>
+Modern World Creation is licensed under DSMSL (DON'T SNATCH MA STUFF LICENSE).<br>
 See `LICENSE.md` for more information.
 
 ## Copyright
