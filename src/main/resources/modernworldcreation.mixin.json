@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "de.keksuccino.modernworldcreation.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "MixinCreateWorldScreen",
+    "MixinWorldGenSettingsComponent"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "modernworldcreation.mixin-refmap.json",
+  "minVersion": "0.8"
+}
