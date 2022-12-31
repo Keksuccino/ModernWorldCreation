@@ -89,7 +89,7 @@ public abstract class MixinCreateWorldScreen extends Screen {
 		this.headerFooterColor = new Color(0, 0, 0, 190);
 		
 		this.cancelButton = null;
-		for (Widget b : this.renderables) {
+		for (Renderable b : this.renderables) {
 			if (b instanceof AbstractWidget) {
 				if (((AbstractWidget) b).getMessage().getString().equals(CommonComponents.GUI_CANCEL.getString())) {
 					this.cancelButton = (AbstractWidget) b;
