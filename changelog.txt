@@ -3,5 +3,6 @@ CHANGELOG | MODERN WORLD CREATION v2.0.0
 - Complete rewrite of the mod
 - Added support for MC 1.21.4 (Fabric, Forge, NeoForge)
 - All text elements of the mod are now localized, not hardcoded anymore
+- Fabric builds now get uploaded to the former Forge CurseForge project (Fabric project is archived now)
 
 %changelog:end%
