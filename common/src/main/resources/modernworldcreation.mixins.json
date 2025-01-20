@@ -5,7 +5,9 @@
   "client": [
     "client.IMixinCreateWorldScreen",
     "client.IMixinScreen",
-    "client.MixinCreateWorldScreen"
+    "client.IMixinTabNavigationBar",
+    "client.MixinCreateWorldScreen",
+    "client.MixinTabManager"
   ],
   "mixins": [
   ],

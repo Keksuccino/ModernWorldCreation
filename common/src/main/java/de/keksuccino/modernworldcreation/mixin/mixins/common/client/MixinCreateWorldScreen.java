@@ -3,13 +3,17 @@ package de.keksuccino.modernworldcreation.mixin.mixins.common.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.keksuccino.modernworldcreation.ModernWorldCreationGameTab;
-import de.keksuccino.modernworldcreation.util.rendering.screens.InitializableCreateWorldScreen;
+import de.keksuccino.modernworldcreation.util.rendering.screens.ExtendedCreateWorldScreen;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.tabs.Tab;
 import net.minecraft.client.gui.components.tabs.TabNavigationBar;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,9 +25,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Mixin(CreateWorldScreen.class)
-public class MixinCreateWorldScreen extends Screen implements InitializableCreateWorldScreen {
+public class MixinCreateWorldScreen extends Screen implements ExtendedCreateWorldScreen {
+
+    @Unique private static final Logger LOGGER_MWC = LogManager.getLogger();
 
     @Unique private Consumer<CreateWorldScreen> onInitBody_ModernWorldCreation = null;
+    @Unique private final List<MWCRenderTask> postRenderTasks_ModernWorldCreation = new ArrayList<>();
 
     private MixinCreateWorldScreen(Component $$0) {
         super($$0);
@@ -54,10 +61,29 @@ public class MixinCreateWorldScreen extends Screen implements InitializableCreat
         }
     }
 
+    @Inject(method = "render", at = @At("RETURN"))
+    private void after_render_ModernWorldCreation(GuiGraphics graphics, int mouseX, int mouseY, float partial, CallbackInfo info) {
+        List<MWCRenderTask> tasks = new ArrayList<>(this.postRenderTasks_ModernWorldCreation);
+        this.postRenderTasks_ModernWorldCreation.clear();
+        tasks.forEach(mwcRenderTask -> {
+            try {
+                mwcRenderTask.render(graphics, mouseX, mouseY, partial);
+            } catch (Exception ex) {
+                LOGGER_MWC.error("[MODERN WORLD CREATION] Failed to execute post-render task in CreateWorldScreen!", ex);
+            }
+        });
+    }
+
     @Unique
     @Override
     public void setOnInitBody_ModernWorldCreation(@Nullable Consumer<CreateWorldScreen> body) {
         this.onInitBody_ModernWorldCreation = body;
+    }
+
+    @Unique
+    @Override
+    public void postPostRenderTask_ModernWorldCreation(@NotNull MWCRenderTask task) {
+        this.postRenderTasks_ModernWorldCreation.add(task);
     }
 
 

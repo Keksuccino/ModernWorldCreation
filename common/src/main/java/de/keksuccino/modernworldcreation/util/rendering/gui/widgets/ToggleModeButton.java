@@ -2,15 +2,20 @@ package de.keksuccino.modernworldcreation.util.rendering.gui.widgets;
 
 import de.keksuccino.modernworldcreation.ModernWorldCreation;
 import de.keksuccino.konkrete.rendering.RenderUtils;
+import de.keksuccino.modernworldcreation.util.rendering.screens.ExtendedCreateWorldScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.awt.*;
@@ -20,6 +25,8 @@ public class ToggleModeButton extends Button {
 	
 	protected static final ResourceLocation INFO_BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/info_back.png");
 
+	@NotNull
+	protected final CreateWorldScreen parent;
 	@NotNull
 	protected ResourceLocation texture;
 	@NotNull
@@ -47,10 +54,11 @@ public class ToggleModeButton extends Button {
 	protected Color infoBorderColor = new Color(224, 224, 224, 255);
 	protected boolean infoHovered = false;
 	
-	public ToggleModeButton(int x, int y, int width, int height, @NotNull ResourceLocation texture, @NotNull Component label, @NotNull OnPress clickAction) {
+	public ToggleModeButton(@NotNull CreateWorldScreen parent, int x, int y, int width, int height, @NotNull ResourceLocation texture, @NotNull Component label, @NotNull OnPress clickAction) {
 
-		super(x, y, width, height, Component.empty(), clickAction, DEFAULT_NARRATION);
+		super(x, y, width, height, label, clickAction, DEFAULT_NARRATION);
 
+		this.parent = parent;
 		this.texture = texture;
 		this.label = label;
 		
@@ -142,18 +150,36 @@ public class ToggleModeButton extends Button {
 		//Render background
 		graphics.fill(this.infoX, this.infoY, this.infoX + this.infoWidth, this.infoY + this.infoHeight, infoBackgroundColor.getRGB());
 
-		//Render border
-		RenderUtils.fill(graphics, (float)this.infoX, (float)this.infoY, (float)(this.infoX + this.infoWidth), (float)this.infoY + infoBorderWidth, infoBorderColor.getRGB(), this.alpha);
 		graphics.flush();
+
+		//Render border
+		//Top
+		RenderUtils.fill(graphics, (float)this.infoX, (float)this.infoY, (float)(this.infoX + this.infoWidth), ((float)this.infoY) + this.infoBorderWidth, this.infoBorderColor.getRGB(), this.alpha);
+		graphics.flush();
+		//Bottom
 		RenderUtils.fill(graphics, (float)this.infoX, (float)(this.infoY + this.infoHeight) - infoBorderWidth, (float)(this.infoX + this.infoWidth), (float)(this.infoY + this.infoHeight), infoBorderColor.getRGB(), this.alpha);
 		graphics.flush();
+		//Left
 		RenderUtils.fill(graphics, (float)this.infoX, (float)this.infoY + infoBorderWidth, (float)this.infoX + infoBorderWidth, (float)(this.infoY + this.infoHeight) - infoBorderWidth, infoBorderColor.getRGB(), this.alpha);
 		graphics.flush();
+		//Right
 		RenderUtils.fill(graphics, (float)(this.infoX + this.infoWidth) - infoBorderWidth, (float)this.infoY + infoBorderWidth, (float)(this.infoX + this.infoWidth), (float)(this.infoY + this.infoHeight) - infoBorderWidth, infoBorderColor.getRGB(), this.alpha);
 		graphics.flush();
 
 		//Render texture
 		graphics.blit(RenderType::guiTextured, INFO_BACKGROUND_TEXTURE, this.infoX, this.infoY, 0.0F, 0.0F, this.infoWidth, this.infoHeight, this.infoWidth, this.infoHeight, ARGB.white(this.alpha));
+
+		//Render info tooltip after CreateWorldScreen rendering
+		if (this.isInfoHovered() && (this.infoTooltip != null)) {
+			((ExtendedCreateWorldScreen)this.parent).postPostRenderTask_ModernWorldCreation((graphics1, mouseX1, mouseY1, partial1) -> {
+				if (this.infoTooltip.isEmpty()) return;
+				if (this.infoTooltip.size() == 1) {
+					graphics1.renderTooltip(Minecraft.getInstance().font, Tooltip.splitTooltip(Minecraft.getInstance(), this.infoTooltip.getFirst()), mouseX1, mouseY1);
+				} else {
+					graphics1.renderComponentTooltip(Minecraft.getInstance().font, this.infoTooltip, mouseX1, mouseY1);
+				}
+			});
+		}
 
 	}
 
@@ -162,6 +188,7 @@ public class ToggleModeButton extends Button {
 	}
 	
 	protected void renderBorder(@NotNull GuiGraphics graphics) {
+
 		float thickness = ModernWorldCreation.getOptions().buttonBorderThickness.getValue();
 		int bY = this.getY();
 		int heightOffset = 0;
@@ -169,6 +196,9 @@ public class ToggleModeButton extends Button {
 			bY -= this.animationTicker / 2;
 			heightOffset += this.animationTicker;
 		}
+
+		graphics.flush();
+
 		//top
 		RenderUtils.fill(graphics, this.getX(), bY - thickness, this.getX() + this.getWidth(), bY, this.borderColor.getRGB(), 1.0F);
 		graphics.flush();
@@ -181,6 +211,7 @@ public class ToggleModeButton extends Button {
 		//right
 		RenderUtils.fill(graphics, this.getX() + this.getWidth(), bY - thickness, this.getX() + this.getWidth() + thickness, bY + this.getHeight() + thickness + heightOffset, this.borderColor.getRGB(), 1.0F);
 		graphics.flush();
+
 	}
 
 	public void setTexture(@NotNull ResourceLocation texture) {
@@ -199,7 +230,13 @@ public class ToggleModeButton extends Button {
 		this.infoTooltip = tooltip;
 	}
 
+	@Nullable
+	public List<Component> getInfoTooltip() {
+		return this.infoTooltip;
+	}
+
 	public boolean isInfoHovered() {
+		if (!this.showInfo) return false;
 		return this.infoHovered;
 	}
 
@@ -209,6 +246,18 @@ public class ToggleModeButton extends Button {
 
 	public boolean isShowInfo() {
 		return this.showInfo;
+	}
+
+	@NotNull
+	@Override
+	protected MutableComponent createNarrationMessage() {
+		if (this.infoTooltip == null) return super.createNarrationMessage();
+		MutableComponent c = super.createNarrationMessage();
+		this.infoTooltip.forEach(component -> {
+			c.append(" ");
+			c.append(component.copy());
+		});
+		return c;
 	}
 
 }

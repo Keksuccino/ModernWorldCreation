@@ -1,5 +1,6 @@
 package de.keksuccino.modernworldcreation.mixin.mixins.common.client;
 
+import net.minecraft.client.gui.components.tabs.TabNavigationBar;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.world.level.WorldDataConfiguration;
@@ -11,6 +12,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface IMixinCreateWorldScreen {
 
     @Accessor("uiState") WorldCreationUiState get_uiState_ModernWorldCreation();
+
+    @Accessor("tabNavigationBar") TabNavigationBar get_tabNavigationBar_ModernWorldCreation();
 
     @Invoker("openExperimentsScreen") void invoke_openExperimentsScreen_ModernWorldCreation(WorldDataConfiguration worldDataConfiguration);
 
