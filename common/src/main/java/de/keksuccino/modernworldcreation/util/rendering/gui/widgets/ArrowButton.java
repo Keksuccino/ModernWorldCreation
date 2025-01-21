@@ -1,11 +1,11 @@
 package de.keksuccino.modernworldcreation.util.rendering.gui.widgets;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.NotNull;
 
 public class ArrowButton extends Button {
@@ -35,7 +35,9 @@ public class ArrowButton extends Button {
         if ((this.direction == ArrowDirection.RIGHT) && !this.isHoveredOrFocused()) loc = ARROW_RIGHT_NORMAL_TEXTURE;
         if ((this.direction == ArrowDirection.RIGHT) && this.isHoveredOrFocused()) loc = ARROW_RIGHT_HOVER_TEXTURE;
 
-        graphics.blit(RenderType::guiTextured, loc, this.getX(), this.getY(), 0.0F, 0.0F, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight(), ARGB.white(this.alpha));
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+        graphics.blit(loc, this.getX(), this.getY(), 0.0F, 0.0F, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
     }
 

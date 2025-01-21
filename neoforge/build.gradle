@@ -45,8 +45,8 @@ jarJar.enable()
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
     compileOnly project(":common")
-	implementation "maven.modrinth:konkrete:1.9.9-1.21.4-neoforge"
-    implementation "maven.modrinth:fancymenu:3.3.5-1.21.4-neoforge"
+    implementation "maven.modrinth:fancymenu:3.3.2-1.21.1-neoforge"
+    implementation "maven.modrinth:konkrete:1.9.9-1.21-neoforge"
     implementation "maven.modrinth:melody:1.0.10-1.21-neoforge"
 }
 

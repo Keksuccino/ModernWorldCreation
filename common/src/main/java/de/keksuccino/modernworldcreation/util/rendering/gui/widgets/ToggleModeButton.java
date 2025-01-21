@@ -1,5 +1,6 @@
 package de.keksuccino.modernworldcreation.util.rendering.gui.widgets;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.keksuccino.modernworldcreation.ModernWorldCreation;
 import de.keksuccino.konkrete.rendering.RenderUtils;
 import de.keksuccino.modernworldcreation.util.rendering.screens.ExtendedCreateWorldScreen;
@@ -14,8 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.awt.*;
@@ -110,11 +109,13 @@ public class ToggleModeButton extends Button {
 			this.infoY = this.getY() + 2;
 		}
 
-		int color = ARGB.white(this.alpha);
 		if (!this.isHoveredOrFocused() && !this.selected && this.darkenWhenUnfocused) {
-			color = ARGB.colorFromFloat(this.alpha, 0.6F, 0.6F, 0.6F);
+			RenderSystem.setShaderColor(0.6F, 0.6F, 0.6F, this.alpha);
+		} else {
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
 		}
-		graphics.blit(RenderType::guiTextured, this.texture, x, y, 0.0F, 0.0F, w, h, this.getWidth(), this.getHeight() + this.addToHeightWhenHovered, color);
+		graphics.blit(this.texture, x, y, 0.0F, 0.0F, w, h, this.getWidth(), this.getHeight() + this.addToHeightWhenHovered);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		//Draw black label background
 		int backY = y + h - 10 - this.labelBackgroundHeight;
@@ -167,7 +168,9 @@ public class ToggleModeButton extends Button {
 		graphics.flush();
 
 		//Render texture
-		graphics.blit(RenderType::guiTextured, INFO_BACKGROUND_TEXTURE, this.infoX, this.infoY, 0.0F, 0.0F, this.infoWidth, this.infoHeight, this.infoWidth, this.infoHeight, ARGB.white(this.alpha));
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+		graphics.blit(INFO_BACKGROUND_TEXTURE, this.infoX, this.infoY, 0.0F, 0.0F, this.infoWidth, this.infoHeight, this.infoWidth, this.infoHeight);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		//Render info tooltip after CreateWorldScreen rendering
 		if (this.isInfoHovered() && (this.infoTooltip != null)) {
