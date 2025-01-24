@@ -112,6 +112,8 @@ public class ModernWorldCreationGameTab extends GridLayoutTab {
                         removeScreenWidget(parent, this.gamemodeSurvivalButton);
                         removeScreenWidget(parent, this.gamemodeCreativeButton);
                         removeScreenWidget(parent, this.gamemodeHardcoreButton);
+                        removeScreenWidget(parent, this.arrowLeftButton);
+                        removeScreenWidget(parent, this.arrowRightButton);
                     } else {
                         parent.repositionElements();
                     }
