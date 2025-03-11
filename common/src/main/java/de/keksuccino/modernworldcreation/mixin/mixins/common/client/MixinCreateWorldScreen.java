@@ -50,7 +50,7 @@ public class MixinCreateWorldScreen extends Screen implements ExtendedCreateWorl
             }
         }
         //Add Modern World Creation Game tab to tabs
-        newTabs.addFirst(new ModernWorldCreationGameTab((CreateWorldScreen)((Object)this)));
+        newTabs.add(0, new ModernWorldCreationGameTab((CreateWorldScreen)((Object)this)));
         return original.call(instance, newTabs.toArray(new Tab[0]));
     }
 

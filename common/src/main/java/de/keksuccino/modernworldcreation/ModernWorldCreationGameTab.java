@@ -17,7 +17,6 @@ import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.tabs.GridLayoutTab;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.components.tabs.TabNavigationBar;
-import net.minecraft.client.gui.layouts.CommonLayouts;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.screens.Screen;
@@ -38,9 +37,9 @@ public class ModernWorldCreationGameTab extends GridLayoutTab {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final ResourceLocation BUTTON_TEXTURE_SURVIVAL = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/gamemodes/background_survival.png");
-    private static final ResourceLocation BUTTON_TEXTURE_CREATIVE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/gamemodes/background_creative.png");
-    private static final ResourceLocation BUTTON_TEXTURE_HARDCORE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/gamemodes/background_hardcore.png");
+    private static final ResourceLocation BUTTON_TEXTURE_SURVIVAL = new ResourceLocation("modernworldcreation", "textures/gamemodes/background_survival.png");
+    private static final ResourceLocation BUTTON_TEXTURE_CREATIVE = new ResourceLocation("modernworldcreation", "textures/gamemodes/background_creative.png");
+    private static final ResourceLocation BUTTON_TEXTURE_HARDCORE = new ResourceLocation("modernworldcreation", "textures/gamemodes/background_hardcore.png");
 
     private static final Component SURVIVAL_LABEL = Component.translatable("modernworldcreation.gamemodes.survival").setStyle(Style.EMPTY.withBold(true));
     private static final Component CREATIVE_LABEL = Component.translatable("modernworldcreation.gamemodes.creative").setStyle(Style.EMPTY.withBold(true));
@@ -72,15 +71,28 @@ public class ModernWorldCreationGameTab extends GridLayoutTab {
 
         final WorldCreationUiState uiState = Objects.requireNonNull(((IMixinCreateWorldScreen)parent).get_uiState_ModernWorldCreation());
 
+//        GridLayout.RowHelper rowHelper = this.layout.rowSpacing(8).createRowHelper(1);
+//        LayoutSettings layoutSettings = rowHelper.newCellSettings();
+//        GridLayout.RowHelper rowHelper2 = new GridLayout().rowSpacing(4).createRowHelper(1);
+//
+//        this.nameEdit = new EditBox(this.font, 0, 0, 208, 20, NAME_LABEL);
+//        this.nameEdit.setValue(uiState.getName());
+//        this.nameEdit.setResponder(uiState::setName);
+//        uiState.addListener((worldCreationUiState) -> this.nameEdit.setTooltip(Tooltip.create(Component.translatable("selectWorld.targetFolder", new Object[]{Component.literal(worldCreationUiState.getTargetFolder()).withStyle(ChatFormatting.ITALIC)}))));
+//        ((IMixinScreen)parent).invoke_setInitialFocus_ModernWorldCreation(this.nameEdit);
+//        rowHelper.addChild(CommonLayouts.labeledElement(this.font, this.nameEdit, NAME_LABEL), rowHelper.newCellSettings().alignHorizontallyCenter());
+
         GridLayout.RowHelper rowHelper = this.layout.rowSpacing(8).createRowHelper(1);
         LayoutSettings layoutSettings = rowHelper.newCellSettings();
+        GridLayout.RowHelper rowHelper2 = new GridLayout().rowSpacing(4).createRowHelper(1);
 
-        this.nameEdit = new EditBox(this.font, 208, 20, Component.translatable("selectWorld.enterName"));
+        rowHelper2.addChild(new StringWidget(NAME_LABEL, this.font), rowHelper2.newCellSettings().paddingLeft(1));
+        this.nameEdit = rowHelper2.addChild(new EditBox(this.font, 0, 0, 208, 20, Component.translatable("selectWorld.enterName")), rowHelper2.newCellSettings().padding(1));
         this.nameEdit.setValue(uiState.getName());
         this.nameEdit.setResponder(uiState::setName);
-        uiState.addListener((worldCreationUiState) -> this.nameEdit.setTooltip(Tooltip.create(Component.translatable("selectWorld.targetFolder", new Object[]{Component.literal(worldCreationUiState.getTargetFolder()).withStyle(ChatFormatting.ITALIC)}))));
+        uiState.addListener(worldCreationUiState -> this.nameEdit.setTooltip(Tooltip.create(Component.translatable("selectWorld.targetFolder", Component.literal(worldCreationUiState.getTargetFolder()).withStyle(ChatFormatting.ITALIC)))));
         ((IMixinScreen)parent).invoke_setInitialFocus_ModernWorldCreation(this.nameEdit);
-        rowHelper.addChild(CommonLayouts.labeledElement(this.font, this.nameEdit, NAME_LABEL), rowHelper.newCellSettings().alignHorizontallyCenter());
+        rowHelper.addChild(rowHelper2.getGrid(), rowHelper.newCellSettings().alignHorizontallyCenter());
 
         this.difficultyButton = rowHelper.addChild(CycleButton.builder(Difficulty::getDisplayName).withValues(Difficulty.values()).create(0, 0, 150, 20, Component.translatable("options.difficulty"), (cycleButtonx, difficulty) -> uiState.setDifficulty(difficulty)), layoutSettings);
         uiState.addListener((worldCreationUiState) -> {
@@ -89,9 +101,9 @@ public class ModernWorldCreationGameTab extends GridLayoutTab {
             this.difficultyButton.setTooltip(Tooltip.create(uiState.getDifficulty().getInfo()));
         });
 
-        this.allowCheatsButton = rowHelper.addChild(CycleButton.onOffBuilder().withTooltip((boolean_) -> Tooltip.create(ALLOW_COMMANDS_INFO)).create(0, 0, 150, 20, ALLOW_COMMANDS, (cycleButtonx, boolean_) -> uiState.setAllowCommands(boolean_)));
+        this.allowCheatsButton = rowHelper.addChild(CycleButton.onOffBuilder().withTooltip((boolean_) -> Tooltip.create(ALLOW_COMMANDS_INFO)).create(0, 0, 150, 20, ALLOW_COMMANDS, (cycleButtonx, boolean_) -> uiState.setAllowCheats(boolean_)));
         uiState.addListener((worldCreationUiState) -> {
-            this.allowCheatsButton.setValue(uiState.isAllowCommands());
+            this.allowCheatsButton.setValue(uiState.isAllowCheats());
             this.allowCheatsButton.active = !uiState.isDebug() && !uiState.isHardcore();
         });
 

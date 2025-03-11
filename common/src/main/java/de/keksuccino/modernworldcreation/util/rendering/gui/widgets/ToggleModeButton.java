@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ToggleModeButton extends Button {
 	
-	protected static final ResourceLocation INFO_BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/info_back.png");
+	protected static final ResourceLocation INFO_BACKGROUND_TEXTURE = new ResourceLocation("modernworldcreation", "textures/info_back.png");
 
 	@NotNull
 	protected final CreateWorldScreen parent;
@@ -177,7 +177,7 @@ public class ToggleModeButton extends Button {
 			((ExtendedCreateWorldScreen)this.parent).postPostRenderTask_ModernWorldCreation((graphics1, mouseX1, mouseY1, partial1) -> {
 				if (this.infoTooltip.isEmpty()) return;
 				if (this.infoTooltip.size() == 1) {
-					graphics1.renderTooltip(Minecraft.getInstance().font, Tooltip.splitTooltip(Minecraft.getInstance(), this.infoTooltip.getFirst()), mouseX1, mouseY1);
+					graphics1.renderTooltip(Minecraft.getInstance().font, Tooltip.splitTooltip(Minecraft.getInstance(), this.infoTooltip.get(0)), mouseX1, mouseY1);
 				} else {
 					graphics1.renderComponentTooltip(Minecraft.getInstance().font, this.infoTooltip, mouseX1, mouseY1);
 				}

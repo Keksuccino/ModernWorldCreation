@@ -3,7 +3,6 @@ package de.keksuccino.modernworldcreation.util.rendering.gui.widgets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -11,10 +10,10 @@ import org.jetbrains.annotations.NotNull;
 public class ArrowButton extends Button {
 
     //All textures are 20x20 pixels
-    protected static final ResourceLocation ARROW_LEFT_NORMAL_TEXTURE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/arrow_left_normal.png");
-    protected static final ResourceLocation ARROW_LEFT_HOVER_TEXTURE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/arrow_left_hover.png");
-    protected static final ResourceLocation ARROW_RIGHT_NORMAL_TEXTURE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/arrow_right_normal.png");
-    protected static final ResourceLocation ARROW_RIGHT_HOVER_TEXTURE = ResourceLocation.fromNamespaceAndPath("modernworldcreation", "textures/arrow_right_hover.png");
+    protected static final ResourceLocation ARROW_LEFT_NORMAL_TEXTURE = new ResourceLocation("modernworldcreation", "textures/arrow_left_normal.png");
+    protected static final ResourceLocation ARROW_LEFT_HOVER_TEXTURE = new ResourceLocation("modernworldcreation", "textures/arrow_left_hover.png");
+    protected static final ResourceLocation ARROW_RIGHT_NORMAL_TEXTURE = new ResourceLocation("modernworldcreation", "textures/arrow_right_normal.png");
+    protected static final ResourceLocation ARROW_RIGHT_HOVER_TEXTURE = new ResourceLocation("modernworldcreation", "textures/arrow_right_hover.png");
 
     protected static final Component ARROW_LEFT_LABEL = Component.translatable("modernworldcreation.arrow_button.left");
     protected static final Component ARROW_RIGHT_LABEL = Component.translatable("modernworldcreation.arrow_button.right");
