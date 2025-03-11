@@ -1,4 +1,12 @@
 
+CHANGELOG | MODERN WORLD CREATION v2.0.2
+
+- Fixed mod wanting a wrong version of Konkrete in Forge 1.20.1
+
+%changelog:end%
+
+
+
 CHANGELOG | MODERN WORLD CREATION v2.0.1
 
 - Fixed arrow keys being visible in all tabs instead of just the Game tab
