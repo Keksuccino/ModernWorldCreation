@@ -16,13 +16,10 @@ Source code for the Modern World Creation Minecraft mod.
 
 Modern World Creation is available on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modernworldcreation)!
 
-## Licensing
+## Licensing & Copyright
 
-Modern World Creation is licensed under DSMSL (DON'T SNATCH MA STUFF LICENSE).<br>
+Modern World Creation Copyright © 2021-2025 Keksuccino<br>
+Modern World Creation is licensed under DSMSLv3 (DON'T SNATCH MA STUFF LICENSE v3).<br>
 See `LICENSE.md` for more information.
 
-## Copyright
-
-- Modern World Creation Copyright © 2021-2022 Keksuccino.<br>
-
-- Textures used for game mode buttons Copyright © Mojang Studios.
+Textures used for game mode buttons Copyright © Mojang Studios.
