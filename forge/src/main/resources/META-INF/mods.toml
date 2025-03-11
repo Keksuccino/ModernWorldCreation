@@ -22,7 +22,7 @@ description='''${mod_description}'''
 modId="konkrete"
 mandatory=true
 ordering="NONE"
-versionRange="[1.9.0,)"
+versionRange="[1.8.0,)"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
