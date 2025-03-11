@@ -9,7 +9,7 @@
 
 Source code for the Modern World Creation Minecraft mod.
 
-**The source code for the different versions of Modern World Creation (Forge, Fabric, multiple MC versions) is separated by branches.**<br>
+**The source code for the different builds of Modern World Creation is separated by branches.**<br>
 **For example, if you want to see the code for Fabric/Forge/NeoForge 1.20.1, use the `1.20.1` branch.**
 
 ## Download
